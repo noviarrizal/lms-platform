@@ -8,6 +8,7 @@ import { IconBadge } from "@/components/icon/iconBadge";
 import { TitleForm } from "./_components/titleForm";
 import { DescriptionForm } from "./_components/descriptionForm";
 import { ImageForm } from "./_components/imageForm";
+import { CategoryForm } from "./_components/categoryForm";
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -64,6 +65,14 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
           <TitleForm initialData={course} courseId={course.id} />
           <DescriptionForm initialData={course} courseId={course.id} />
           <ImageForm initialData={course} courseId={course.id} />
+          <CategoryForm
+            initialData={course}
+            courseId={course.id}
+            options={categories.map((category) => ({
+              label: category.name,
+              value: category.id,
+            }))}
+          />
         </div>
       </div>
     </div>
