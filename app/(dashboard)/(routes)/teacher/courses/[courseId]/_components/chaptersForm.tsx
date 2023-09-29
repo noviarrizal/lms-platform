@@ -59,6 +59,21 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     }
   };
 
+  const onReorder = async (updateData: { id: string; position: number }[]) => {
+    try {
+      setIsUpdating(true);
+
+      await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
+        list: updateData,
+      });
+      router.refresh();
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
@@ -93,7 +108,11 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
                 </FormItem>
               )}
             />
-            <Button disabled={!isValid || isSubmitting} type="submit">
+            <Button
+              disabled={!isValid || isSubmitting}
+              type="submit"
+              className="mt-4"
+            >
               Create
             </Button>
           </form>
@@ -109,8 +128,8 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
           {!initialData.chapters.length && "No Chapters"}
           <ChaptersList
             onEdit={() => {}}
-            onReorder={() => {}}
-            items={initialData.chapters}
+            onReorder={onReorder}
+            items={initialData.chapters || []}
           />
         </div>
       )}
